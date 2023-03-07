@@ -57,7 +57,12 @@ class Utils {
 
     static func data(image: Image) -> Data? {
         #if canImport(UIKit)
-        return image.jpegData(compressionQuality: 0.9)
+        if (image.hasAlpha) {
+            return image.pngData()
+        } else {
+            return image.jpegData(compressionQuality: 0.0)
+        }
+        //return image.jpegData(compressionQuality: 0.9)
         #elseif canImport(AppKit)
         return image.tiffRepresentation
         #else
@@ -73,3 +78,13 @@ public struct File {
     public let size: UInt64?
 }
 
+#if canImport(UIKit)
+extension UIImage {
+    var hasAlpha: Bool {
+        guard let alphaInfo = self.cgImage?.alphaInfo else {return false}
+        return alphaInfo != CGImageAlphaInfo.none &&
+        alphaInfo != CGImageAlphaInfo.noneSkipFirst &&
+        alphaInfo != CGImageAlphaInfo.noneSkipLast
+    }
+}
+#endif
