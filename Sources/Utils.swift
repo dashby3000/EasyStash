@@ -60,7 +60,7 @@ class Utils {
         if (image.hasAlpha) {
             return image.pngData()
         } else {
-            return image.jpegData(compressionQuality: 0.0)
+            return image.jpegData(compressionQuality: 1.0)
         }
         //return image.jpegData(compressionQuality: 0.9)
         #elseif canImport(AppKit)
